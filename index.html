@@ -26,23 +26,25 @@
 <h2>Gemessen (ohne Annahmen)</h2>
 <p class="muted">Nur aus Wallbox-Energie und Tacho – ohne jede Annahme über Akku-Kapazität oder Wirkungsgrad.</p>
 <table>
-<thead><tr><th>Fahrzeug</th><th>gefahren</th><th>geladen<br>(Wallbox)</th><th>ab Steckdose roh<br>ΣkWh / Σkm</th></tr></thead>
+<thead><tr><th>Fahrzeug</th><th>gefahren</th><th>geladen<br>(Wallbox)</th><th>ab Steckdose roh<br>ΣkWh / Σkm</th><th>Akku am Ende<br>(SoC-Saldo)</th></tr></thead>
 <tbody>
-<tr><th>ID.3</th><td>1653 km</td><td>270 kWh</td><td>16.3</td></tr>
-<tr><th>e-up!</th><td>1174 km</td><td>173 kWh</td><td>14.8</td></tr>
+<tr><th>ID.3</th><td>1653 km</td><td>270 kWh</td><td>16.3</td><td>-46 %</td></tr>
+<tr><th>e-up!</th><td>1174 km</td><td>173 kWh</td><td>14.8</td><td>-29 %</td></tr>
 </tbody>
 </table>
-<p class="muted">Der rohe Wert unterschätzt leicht, solange der Akku am Ende einen anderen SoC hat als am Anfang (nicht nachgeladene Energie fehlt in „geladen“).</p>
+<p class="muted">Der rohe Wert gilt nur bei gleichem Start-/End-SoC. Aktuell sind die Akkus am Ende leerer (letzte Spalte): die auf dieser Rest-Entladung gefahrenen km sind noch nicht nachgeladen, deshalb ist „ab Steckdose roh“ <strong>zu niedrig</strong>. Der korrigierte Wert steht unten.</p>
 
-<h2>Modellabhängig</h2>
-<p class="muted">Nutzt die Netto-Kapazität aus dem VW-Datenexport (ID.3 53,7 / e-up! 32,3 kWh). Der Wirkungsgrad ist <strong>aus den Ladedaten gemessen</strong> (Median), nicht angenommen. „ab Steckdose“ ist um die Netto-SoC-Verschiebung korrigiert.</p>
+<h2>Verbrauch</h2>
+<p class="muted">Primär ist die (fast) gemessene Größe <strong>ab Steckdose</strong> – die Energie aus der Wand je 100 km, um die Netto-SoC-Verschiebung korrigiert. Davon sind die <strong>Ladeverluste</strong> ein Prozent-Anteil (Wirkungsgrad aus den Ladedaten gemessen). Was übrig bleibt, landet im Akku:</p>
+<p style="text-align:center;font-size:1.05rem"><strong>ab Akku = ab Steckdose − Ladeverluste</strong></p>
 <table>
-<thead><tr><th>Fahrzeug</th><th>ab Akku<br>kWh/100 km</th><th>ab Steckdose<br>kWh/100 km</th><th>Ladewirkungsgrad<br>gemessen</th><th>nutzbare Kapazität<br>(aus Laden)</th></tr></thead>
+<thead><tr><th>Fahrzeug</th><th>ab Steckdose<br>(gemessen)</th><th>− Ladeverluste</th><th>= ab Akku<br>(abgeleitet)</th><th>Gegencheck ab Akku<br>(ΔSoC × Kapazität)</th></tr></thead>
 <tbody>
-<tr><th>ID.3</th><td>16.7</td><td>17.9</td><td>94.0 % (n=10)</td><td>58.5 kWh</td></tr>
-<tr><th>e-up!</th><td>14.7</td><td>15.6</td><td>95.0 % (n=13)</td><td>32.3 kWh</td></tr>
+<tr><th>ID.3</th><td>17.9</td><td>−6 % (≈1.1)</td><td><strong>16.8</strong></td><td>16.7</td></tr>
+<tr><th>e-up!</th><td>15.6</td><td>−5 % (≈0.8)</td><td><strong>14.8</strong></td><td>14.7</td></tr>
 </tbody>
 </table>
+<p class="muted">Alle Werte in kWh/100 km. Der <strong>Gegencheck</strong> rechnet „ab Akku“ unabhängig über SoC-Hub × VW-Kapazität (ID.3 53,7 / e-up! 32,3 kWh) – er bestätigt die abgeleitete Zahl auf ~1 %. Gemessener Ladewirkungsgrad: ID.3 94 %, e-up! 95 %. Nutzbare Kapazität aus dem Lade-Fit: ID.3 58.5 kWh, e-up! 32.3 kWh.</p>
 
 <h2>Fahren: Reichweite & Verbrauch</h2>
 <figure><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 560" font-family="system-ui,sans-serif">

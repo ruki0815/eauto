@@ -17,36 +17,113 @@
   thead th { color: var(--muted); font-weight: 600; }
   figure { margin: 1.5rem 0; } figure svg { max-width: 100%; height: auto; background:#fff; border-radius:8px; }
   figcaption { color: var(--muted); font-size: .9rem; margin-top: .4rem; }
+  h3 { font-size: 1rem; margin-top: 1.4rem; }
+  .kpis { display: flex; flex-wrap: wrap; gap: 1.2rem; margin: 1rem 0; }
+  .car { flex: 1 1 18rem; }
+  .car h3 { margin: .2rem 0 .5rem; font-size: 1.1rem; }
+  .tiles { display: flex; gap: .6rem; }
+  .tile { flex: 1; border: 1px solid var(--line); border-radius: 12px; padding: .8rem .4rem; text-align: center; }
+  .tile .num { display: block; font-size: 1.7rem; font-weight: 700; line-height: 1.1; }
+  .tile .lbl { display: block; color: var(--muted); font-size: .72rem; margin-top: .35rem; }
 </style>
 </head>
 <body>
 <h1>E-Auto-Verbrauch</h1>
-<p class="muted">Aggregierte Auswertung aus dem Logbuch. Stand: 2026-10-31. Nur Mittel-/Summenwerte, keine Einzelfahrten.</p>
+<p class="muted">Unsere zwei E-Autos (VW ID.3 & e-up!), ausgewertet aus dem Fahrtenbuch. Stand: 2026-10-31.</p>
 
-<h2>Gemessen (ohne Annahmen)</h2>
-<p class="muted">Nur aus Wallbox-Energie und Tacho – ohne jede Annahme über Akku-Kapazität oder Wirkungsgrad.</p>
-<table>
-<thead><tr><th>Fahrzeug</th><th>gefahren</th><th>geladen<br>(Wallbox)</th><th>ab Steckdose roh<br>ΣkWh / Σkm</th><th>Akku am Ende<br>(SoC-Saldo)</th></tr></thead>
-<tbody>
-<tr><th>ID.3</th><td>1817 km</td><td>289 kWh</td><td>15.9</td><td>-69 %</td></tr>
-<tr><th>e-up!</th><td>1351 km</td><td>208 kWh</td><td>15.4</td><td>-25 %</td></tr>
-</tbody>
-</table>
-<p class="muted">Der rohe Wert gilt nur bei gleichem Start-/End-SoC. Aktuell sind die Akkus am Ende leerer (letzte Spalte): die auf dieser Rest-Entladung gefahrenen km sind noch nicht nachgeladen, deshalb ist „ab Steckdose roh“ <strong>zu niedrig</strong>. Der korrigierte Wert steht unten.</p>
+<h2>Auf einen Blick</h2>
+<div class="kpis"><div class="car"><h3>ID.3</h3><div class="tiles"><div class="tile"><span class="num">18,1</span><span class="lbl">kWh/100 km<br>ab Steckdose</span></div><div class="tile"><span class="num">307</span><span class="lbl">km Reichweite<br>(volle Ladung)</span></div><div class="tile"><span class="num">1817</span><span class="lbl">km gefahren<br>(gesamt)</span></div></div></div><div class="car"><h3>e-up!</h3><div class="tiles"><div class="tile"><span class="num">16,0</span><span class="lbl">kWh/100 km<br>ab Steckdose</span></div><div class="tile"><span class="num">229</span><span class="lbl">km Reichweite<br>(volle Ladung)</span></div><div class="tile"><span class="num">1351</span><span class="lbl">km gefahren<br>(gesamt)</span></div></div></div></div>
+<p class="muted">Ø Verbrauch = Energie aus der Steckdose je 100 km (inkl. Ladeverluste). Reichweite = aus den echten Fahrdaten geschätzte km bei voller Ladung.</p>
 
-<h2>Verbrauch</h2>
-<p class="muted">Primär ist die (fast) gemessene Größe <strong>ab Steckdose</strong> – die Energie aus der Wand je 100 km, um die Netto-SoC-Verschiebung korrigiert. Davon sind die <strong>Ladeverluste</strong> ein Prozent-Anteil (Wirkungsgrad aus den Ladedaten gemessen). Was übrig bleibt, landet im Akku:</p>
-<p style="text-align:center;font-size:1.05rem"><strong>ab Akku = ab Steckdose − Ladeverluste</strong></p>
-<table>
-<thead><tr><th>Fahrzeug</th><th>ab Steckdose<br>(gemessen)</th><th>− Ladeverluste</th><th>= ab Akku<br>(abgeleitet)</th><th>Gegencheck ab Akku<br>(ΔSoC × Kapazität)</th></tr></thead>
-<tbody>
-<tr><th>ID.3</th><td>18.1</td><td>−6 % (≈1.1)</td><td><strong>17.0</strong></td><td>16.9</td></tr>
-<tr><th>e-up!</th><td>16.0</td><td>−5 % (≈0.8)</td><td><strong>15.2</strong></td><td>15.1</td></tr>
-</tbody>
-</table>
-<p class="muted">Alle Werte in kWh/100 km. Der <strong>Gegencheck</strong> rechnet „ab Akku“ unabhängig über SoC-Hub × VW-Kapazität (ID.3 53,7 / e-up! 32,3 kWh) – er bestätigt die abgeleitete Zahl auf ~1 %. Gemessener Ladewirkungsgrad: ID.3 94 %, e-up! 95 %. Nutzbare Kapazität aus dem Lade-Fit: ID.3 58.5 kWh, e-up! 31.2 kWh.</p>
+<h2>Verbrauch je Fahrt</h2>
+<figure><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 560" font-family="system-ui,sans-serif">
+<rect width="900" height="560" fill="#ffffff"/>
+<text x="450" y="28" text-anchor="middle" font-size="18" font-weight="600" fill="#111">Verbrauch je Fahrt (ab Steckdose) – Verteilung je Auto</text>
+<line x1="70" y1="487.0" x2="870" y2="487.0" stroke="#eee"/>
+<text x="62" y="491.0" text-anchor="end" font-size="12" fill="#555">6</text>
+<line x1="70" y1="448.4" x2="870" y2="448.4" stroke="#eee"/>
+<text x="62" y="452.4" text-anchor="end" font-size="12" fill="#555">8</text>
+<line x1="70" y1="409.7" x2="870" y2="409.7" stroke="#eee"/>
+<text x="62" y="413.7" text-anchor="end" font-size="12" fill="#555">10</text>
+<line x1="70" y1="371.0" x2="870" y2="371.0" stroke="#eee"/>
+<text x="62" y="375.0" text-anchor="end" font-size="12" fill="#555">12</text>
+<line x1="70" y1="332.4" x2="870" y2="332.4" stroke="#eee"/>
+<text x="62" y="336.4" text-anchor="end" font-size="12" fill="#555">14</text>
+<line x1="70" y1="293.7" x2="870" y2="293.7" stroke="#eee"/>
+<text x="62" y="297.7" text-anchor="end" font-size="12" fill="#555">16</text>
+<line x1="70" y1="255.0" x2="870" y2="255.0" stroke="#eee"/>
+<text x="62" y="259.0" text-anchor="end" font-size="12" fill="#555">18</text>
+<line x1="70" y1="216.3" x2="870" y2="216.3" stroke="#eee"/>
+<text x="62" y="220.3" text-anchor="end" font-size="12" fill="#555">20</text>
+<line x1="70" y1="177.7" x2="870" y2="177.7" stroke="#eee"/>
+<text x="62" y="181.7" text-anchor="end" font-size="12" fill="#555">22</text>
+<line x1="70" y1="139.0" x2="870" y2="139.0" stroke="#eee"/>
+<text x="62" y="143.0" text-anchor="end" font-size="12" fill="#555">24</text>
+<line x1="70" y1="100.3" x2="870" y2="100.3" stroke="#eee"/>
+<text x="62" y="104.3" text-anchor="end" font-size="12" fill="#555">26</text>
+<line x1="70" y1="61.7" x2="870" y2="61.7" stroke="#eee"/>
+<text x="62" y="65.7" text-anchor="end" font-size="12" fill="#555">28</text>
+<line x1="70" y1="56" x2="70" y2="496" stroke="#999"/>
+<line x1="70" y1="496" x2="870" y2="496" stroke="#999"/>
+<text x="18" y="276" text-anchor="middle" font-size="13" fill="#333" transform="rotate(-90 18 276)">kWh/100 km (ab Steckdose)</text>
+<line x1="720" y1="64" x2="744" y2="64" stroke="#111" stroke-width="2"/>
+<text x="750" y="68" font-size="12" fill="#222">Median</text>
+<line x1="720" y1="82" x2="744" y2="82" stroke="#111" stroke-width="2" stroke-dasharray="5 3"/>
+<text x="750" y="86" font-size="12" fill="#222">Mittelwert</text>
+<polygon points="262.4,496.0 261.0,490.5 259.6,485.0 258.1,479.5 256.7,474.0 255.4,468.5 254.1,463.0 253.0,457.5 252.1,452.0 251.4,446.5 250.8,441.0 250.3,435.5 250.0,430.0 249.7,424.5 249.4,419.0 249.1,413.5 248.6,408.0 247.9,402.5 246.9,397.0 245.7,391.5 244.0,386.0 242.0,380.5 239.5,375.0 236.5,369.5 232.9,364.0 228.7,358.5 223.8,353.0 218.1,347.5 211.8,342.0 204.7,336.5 196.9,331.0 188.5,325.5 179.6,320.0 170.5,314.5 161.2,309.0 152.1,303.5 143.4,298.0 135.4,292.5 128.3,287.0 122.2,281.5 117.3,276.0 113.7,270.5 111.3,265.0 110.1,259.5 110.0,254.0 110.9,248.5 112.5,243.0 114.9,237.5 117.8,232.0 121.2,226.5 125.0,221.0 129.3,215.5 134.0,210.0 139.1,204.5 144.8,199.0 151.0,193.5 157.8,188.0 165.1,182.5 172.8,177.0 180.9,171.5 189.3,166.0 197.7,160.5 206.0,155.0 214.2,149.5 221.9,144.0 229.2,138.5 235.8,133.0 241.8,127.5 247.1,122.0 251.7,116.5 255.6,111.0 258.8,105.5 261.5,100.0 263.6,94.5 265.3,89.0 266.6,83.5 267.6,78.0 268.3,72.5 268.8,67.0 269.2,61.5 269.5,56.0 270.5,56.0 270.8,61.5 271.2,67.0 271.7,72.5 272.4,78.0 273.4,83.5 274.7,89.0 276.4,94.5 278.5,100.0 281.2,105.5 284.4,111.0 288.3,116.5 292.9,122.0 298.2,127.5 304.2,133.0 310.8,138.5 318.1,144.0 325.8,149.5 334.0,155.0 342.3,160.5 350.7,166.0 359.1,171.5 367.2,177.0 374.9,182.5 382.2,188.0 389.0,193.5 395.2,199.0 400.9,204.5 406.0,210.0 410.7,215.5 415.0,221.0 418.8,226.5 422.2,232.0 425.1,237.5 427.5,243.0 429.1,248.5 430.0,254.0 429.9,259.5 428.7,265.0 426.3,270.5 422.7,276.0 417.8,281.5 411.7,287.0 404.6,292.5 396.6,298.0 387.9,303.5 378.8,309.0 369.5,314.5 360.4,320.0 351.5,325.5 343.1,331.0 335.3,336.5 328.2,342.0 321.9,347.5 316.2,353.0 311.3,358.5 307.1,364.0 303.5,369.5 300.5,375.0 298.0,380.5 296.0,386.0 294.3,391.5 293.1,397.0 292.1,402.5 291.4,408.0 290.9,413.5 290.6,419.0 290.3,424.5 290.0,430.0 289.7,435.5 289.2,441.0 288.6,446.5 287.9,452.0 287.0,457.5 285.9,463.0 284.6,468.5 283.3,474.0 281.9,479.5 280.4,485.0 279.0,490.5 277.6,496.0" fill="#2563eb" opacity="0.18" stroke="#2563eb" stroke-width="1.2"/>
+<line x1="256.0" y1="284.6" x2="284.0" y2="284.6" stroke="#2563eb" stroke-width="1"/>
+<line x1="256.0" y1="204.9" x2="284.0" y2="204.9" stroke="#2563eb" stroke-width="1"/>
+<line x1="270.0" y1="284.6" x2="270.0" y2="204.9" stroke="#2563eb" stroke-width="1"/>
+<line x1="250.0" y1="270.6" x2="290.0" y2="270.6" stroke="#111" stroke-width="2"/>
+<line x1="250.0" y1="261.6" x2="290.0" y2="261.6" stroke="#111" stroke-width="2" stroke-dasharray="5 3"/>
+<circle cx="225.2" cy="445.2" r="3.4" fill="#2563eb" stroke="#fff" stroke-width="0.6"/>
+<circle cx="247.6" cy="362.9" r="3.4" fill="#2563eb" stroke="#fff" stroke-width="0.6"/>
+<circle cx="270.0" cy="313.1" r="3.4" fill="#2563eb" stroke="#fff" stroke-width="0.6"/>
+<circle cx="292.4" cy="289.8" r="3.4" fill="#2563eb" stroke="#fff" stroke-width="0.6"/>
+<circle cx="314.8" cy="279.5" r="3.4" fill="#2563eb" stroke="#fff" stroke-width="0.6"/>
+<circle cx="225.2" cy="274.3" r="3.4" fill="#2563eb" stroke="#fff" stroke-width="0.6"/>
+<circle cx="247.6" cy="274.2" r="3.4" fill="#2563eb" stroke="#fff" stroke-width="0.6"/>
+<circle cx="270.0" cy="274.0" r="3.4" fill="#2563eb" stroke="#fff" stroke-width="0.6"/>
+<circle cx="292.4" cy="270.6" r="3.4" fill="#2563eb" stroke="#fff" stroke-width="0.6"/>
+<circle cx="314.8" cy="249.5" r="3.4" fill="#2563eb" stroke="#fff" stroke-width="0.6"/>
+<circle cx="225.2" cy="244.0" r="3.4" fill="#2563eb" stroke="#fff" stroke-width="0.6"/>
+<circle cx="247.6" cy="213.9" r="3.4" fill="#2563eb" stroke="#fff" stroke-width="0.6"/>
+<circle cx="270.0" cy="208.5" r="3.4" fill="#2563eb" stroke="#fff" stroke-width="0.6"/>
+<circle cx="292.4" cy="201.3" r="3.4" fill="#2563eb" stroke="#fff" stroke-width="0.6"/>
+<circle cx="314.8" cy="198.0" r="3.4" fill="#2563eb" stroke="#fff" stroke-width="0.6"/>
+<circle cx="225.2" cy="175.0" r="3.4" fill="#2563eb" stroke="#fff" stroke-width="0.6"/>
+<circle cx="247.6" cy="173.9" r="3.4" fill="#2563eb" stroke="#fff" stroke-width="0.6"/>
+<text x="270.0" y="516.0" text-anchor="middle" font-size="13" fill="#222">ID.3  (n=17, Median 17.2)</text>
+<text x="270.0" y="532.0" text-anchor="middle" font-size="11" fill="#777">η 94 %</text>
+<polygon points="670.0,496.0 670.0,490.5 670.0,485.0 669.9,479.5 669.9,474.0 669.8,468.5 669.7,463.0 669.6,457.5 669.3,452.0 669.0,446.5 668.4,441.0 667.6,435.5 666.5,430.0 664.9,424.5 662.7,419.0 659.9,413.5 656.2,408.0 651.5,402.5 645.6,397.0 638.6,391.5 630.3,386.0 620.8,380.5 610.0,375.0 598.3,369.5 585.8,364.0 573.0,358.5 560.1,353.0 547.8,347.5 536.6,342.0 526.8,336.5 519.0,331.0 513.4,325.5 510.4,320.0 510.0,314.5 512.2,309.0 516.8,303.5 523.6,298.0 532.0,292.5 541.7,287.0 552.2,281.5 562.9,276.0 573.5,270.5 583.6,265.0 592.8,259.5 601.1,254.0 608.3,248.5 614.6,243.0 619.8,237.5 624.3,232.0 628.2,226.5 631.6,221.0 634.6,215.5 637.5,210.0 640.3,204.5 643.0,199.0 645.7,193.5 648.2,188.0 650.6,182.5 652.7,177.0 654.5,171.5 655.9,166.0 657.0,160.5 657.6,155.0 657.9,149.5 657.9,144.0 657.6,138.5 657.2,133.0 656.7,127.5 656.2,122.0 655.9,116.5 655.7,111.0 655.8,105.5 656.1,100.0 656.7,94.5 657.6,89.0 658.6,83.5 659.8,78.0 661.0,72.5 662.3,67.0 663.5,61.5 664.7,56.0 675.3,56.0 676.5,61.5 677.7,67.0 679.0,72.5 680.2,78.0 681.4,83.5 682.4,89.0 683.3,94.5 683.9,100.0 684.2,105.5 684.3,111.0 684.1,116.5 683.8,122.0 683.3,127.5 682.8,133.0 682.4,138.5 682.1,144.0 682.1,149.5 682.4,155.0 683.0,160.5 684.1,166.0 685.5,171.5 687.3,177.0 689.4,182.5 691.8,188.0 694.3,193.5 697.0,199.0 699.7,204.5 702.5,210.0 705.4,215.5 708.4,221.0 711.8,226.5 715.7,232.0 720.2,237.5 725.4,243.0 731.7,248.5 738.9,254.0 747.2,259.5 756.4,265.0 766.5,270.5 777.1,276.0 787.8,281.5 798.3,287.0 808.0,292.5 816.4,298.0 823.2,303.5 827.8,309.0 830.0,314.5 829.6,320.0 826.6,325.5 821.0,331.0 813.2,336.5 803.4,342.0 792.2,347.5 779.9,353.0 767.0,358.5 754.2,364.0 741.7,369.5 730.0,375.0 719.2,380.5 709.7,386.0 701.4,391.5 694.4,397.0 688.5,402.5 683.8,408.0 680.1,413.5 677.3,419.0 675.1,424.5 673.5,430.0 672.4,435.5 671.6,441.0 671.0,446.5 670.7,452.0 670.4,457.5 670.3,463.0 670.2,468.5 670.1,474.0 670.1,479.5 670.0,485.0 670.0,490.5 670.0,496.0" fill="#ea580c" opacity="0.18" stroke="#ea580c" stroke-width="1.2"/>
+<line x1="656.0" y1="328.9" x2="684.0" y2="328.9" stroke="#ea580c" stroke-width="1"/>
+<line x1="656.0" y1="283.8" x2="684.0" y2="283.8" stroke="#ea580c" stroke-width="1"/>
+<line x1="670.0" y1="328.9" x2="670.0" y2="283.8" stroke="#ea580c" stroke-width="1"/>
+<line x1="650.0" y1="314.2" x2="690.0" y2="314.2" stroke="#111" stroke-width="2"/>
+<line x1="650.0" y1="291.3" x2="690.0" y2="291.3" stroke="#111" stroke-width="2" stroke-dasharray="5 3"/>
+<circle cx="625.2" cy="347.1" r="3.4" fill="#ea580c" stroke="#fff" stroke-width="0.6"/>
+<circle cx="647.6" cy="346.4" r="3.4" fill="#ea580c" stroke="#fff" stroke-width="0.6"/>
+<circle cx="670.0" cy="329.2" r="3.4" fill="#ea580c" stroke="#fff" stroke-width="0.6"/>
+<circle cx="692.4" cy="329.2" r="3.4" fill="#ea580c" stroke="#fff" stroke-width="0.6"/>
+<circle cx="714.8" cy="327.8" r="3.4" fill="#ea580c" stroke="#fff" stroke-width="0.6"/>
+<circle cx="625.2" cy="319.8" r="3.4" fill="#ea580c" stroke="#fff" stroke-width="0.6"/>
+<circle cx="647.6" cy="316.5" r="3.4" fill="#ea580c" stroke="#fff" stroke-width="0.6"/>
+<circle cx="670.0" cy="315.3" r="3.4" fill="#ea580c" stroke="#fff" stroke-width="0.6"/>
+<circle cx="692.4" cy="313.1" r="3.4" fill="#ea580c" stroke="#fff" stroke-width="0.6"/>
+<circle cx="714.8" cy="305.7" r="3.4" fill="#ea580c" stroke="#fff" stroke-width="0.6"/>
+<circle cx="625.2" cy="297.6" r="3.4" fill="#ea580c" stroke="#fff" stroke-width="0.6"/>
+<circle cx="647.6" cy="285.2" r="3.4" fill="#ea580c" stroke="#fff" stroke-width="0.6"/>
+<circle cx="670.0" cy="283.3" r="3.4" fill="#ea580c" stroke="#fff" stroke-width="0.6"/>
+<circle cx="692.4" cy="227.8" r="3.4" fill="#ea580c" stroke="#fff" stroke-width="0.6"/>
+<circle cx="714.8" cy="210.0" r="3.4" fill="#ea580c" stroke="#fff" stroke-width="0.6"/>
+<circle cx="625.2" cy="106.8" r="3.4" fill="#ea580c" stroke="#fff" stroke-width="0.6"/>
+<text x="670.0" y="516.0" text-anchor="middle" font-size="13" fill="#222">e-up!  (n=16, Median 14.9)</text>
+<text x="670.0" y="532.0" text-anchor="middle" font-size="11" fill="#777">η 95 %</text>
+</svg>
+<figcaption>Verteilung des Verbrauchs je Fahrt (ab Steckdose), je Auto. Punkte = echte Fahrten, durchgezogene Linie = Median, gestrichelt = Mittelwert, dünne Markierungen = Quartile. Der Abstand Median↔Mittelwert zeigt die Schiefe.</figcaption>
+</figure>
 
-<h2>Fahren: Reichweite & Verbrauch</h2>
+<h2>Reichweite & Fahren</h2>
 <figure><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 560" font-family="system-ui,sans-serif">
 <rect width="900" height="560" fill="#ffffff"/>
 <text x="450" y="28" text-anchor="middle" font-size="18" font-weight="600" fill="#111">Reichweite D(SoC) mit 95 %-Band</text>
@@ -107,7 +184,7 @@
 <text x="114" y="96" font-size="12" fill="#222">e-up!: 0→100 % ≈ 229 km</text>
 <text x="84" y="114" font-size="11" fill="#777">gestrichelt = extrapoliert</text>
 </svg>
-<figcaption>Reichweite D(SoC): wie viele km du von einem SoC-Stand bis 0 % fahren kannst. Rein aus Tacho + SoC gerechnet – unabhängig von Akku-Kapazität und Wirkungsgrad. „Von a auf b" = D(a) − D(b). Gestrichelt = extrapoliert.</figcaption>
+<figcaption>Reichweite D(SoC): wie viele km du von einem SoC-Stand bis 0 % fahren kannst. Rein aus Tacho + SoC gerechnet. „Von a auf b" = D(a) − D(b). Gestrichelt = extrapoliert.</figcaption>
 </figure>
 <figure><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 560" font-family="system-ui,sans-serif">
 <rect width="900" height="560" fill="#ffffff"/>
@@ -230,94 +307,8 @@
 </svg>
 <figcaption>km pro %SoC je Fahrt und gefittete Kurve. Weitgehend konstant; die Streuung spiegelt die Fahrbedingungen (Tempo, Temperatur, Strecke).</figcaption>
 </figure>
-<figure><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 560" font-family="system-ui,sans-serif">
-<rect width="900" height="560" fill="#ffffff"/>
-<text x="450" y="28" text-anchor="middle" font-size="18" font-weight="600" fill="#111">Verbrauch je Fahrt (ab Steckdose) – Verteilung je Auto</text>
-<line x1="70" y1="487.0" x2="870" y2="487.0" stroke="#eee"/>
-<text x="62" y="491.0" text-anchor="end" font-size="12" fill="#555">6</text>
-<line x1="70" y1="448.4" x2="870" y2="448.4" stroke="#eee"/>
-<text x="62" y="452.4" text-anchor="end" font-size="12" fill="#555">8</text>
-<line x1="70" y1="409.7" x2="870" y2="409.7" stroke="#eee"/>
-<text x="62" y="413.7" text-anchor="end" font-size="12" fill="#555">10</text>
-<line x1="70" y1="371.0" x2="870" y2="371.0" stroke="#eee"/>
-<text x="62" y="375.0" text-anchor="end" font-size="12" fill="#555">12</text>
-<line x1="70" y1="332.4" x2="870" y2="332.4" stroke="#eee"/>
-<text x="62" y="336.4" text-anchor="end" font-size="12" fill="#555">14</text>
-<line x1="70" y1="293.7" x2="870" y2="293.7" stroke="#eee"/>
-<text x="62" y="297.7" text-anchor="end" font-size="12" fill="#555">16</text>
-<line x1="70" y1="255.0" x2="870" y2="255.0" stroke="#eee"/>
-<text x="62" y="259.0" text-anchor="end" font-size="12" fill="#555">18</text>
-<line x1="70" y1="216.3" x2="870" y2="216.3" stroke="#eee"/>
-<text x="62" y="220.3" text-anchor="end" font-size="12" fill="#555">20</text>
-<line x1="70" y1="177.7" x2="870" y2="177.7" stroke="#eee"/>
-<text x="62" y="181.7" text-anchor="end" font-size="12" fill="#555">22</text>
-<line x1="70" y1="139.0" x2="870" y2="139.0" stroke="#eee"/>
-<text x="62" y="143.0" text-anchor="end" font-size="12" fill="#555">24</text>
-<line x1="70" y1="100.3" x2="870" y2="100.3" stroke="#eee"/>
-<text x="62" y="104.3" text-anchor="end" font-size="12" fill="#555">26</text>
-<line x1="70" y1="61.7" x2="870" y2="61.7" stroke="#eee"/>
-<text x="62" y="65.7" text-anchor="end" font-size="12" fill="#555">28</text>
-<line x1="70" y1="56" x2="70" y2="496" stroke="#999"/>
-<line x1="70" y1="496" x2="870" y2="496" stroke="#999"/>
-<text x="18" y="276" text-anchor="middle" font-size="13" fill="#333" transform="rotate(-90 18 276)">kWh/100 km (ab Steckdose)</text>
-<line x1="720" y1="64" x2="744" y2="64" stroke="#111" stroke-width="2"/>
-<text x="750" y="68" font-size="12" fill="#222">Median</text>
-<line x1="720" y1="82" x2="744" y2="82" stroke="#111" stroke-width="2" stroke-dasharray="5 3"/>
-<text x="750" y="86" font-size="12" fill="#222">Mittelwert</text>
-<polygon points="262.4,496.0 261.0,490.5 259.6,485.0 258.1,479.5 256.7,474.0 255.4,468.5 254.1,463.0 253.0,457.5 252.1,452.0 251.4,446.5 250.8,441.0 250.3,435.5 250.0,430.0 249.7,424.5 249.4,419.0 249.1,413.5 248.6,408.0 247.9,402.5 246.9,397.0 245.7,391.5 244.0,386.0 242.0,380.5 239.5,375.0 236.5,369.5 232.9,364.0 228.7,358.5 223.8,353.0 218.1,347.5 211.8,342.0 204.7,336.5 196.9,331.0 188.5,325.5 179.6,320.0 170.5,314.5 161.2,309.0 152.1,303.5 143.4,298.0 135.4,292.5 128.3,287.0 122.2,281.5 117.3,276.0 113.7,270.5 111.3,265.0 110.1,259.5 110.0,254.0 110.9,248.5 112.5,243.0 114.9,237.5 117.8,232.0 121.2,226.5 125.0,221.0 129.3,215.5 134.0,210.0 139.1,204.5 144.8,199.0 151.0,193.5 157.8,188.0 165.1,182.5 172.8,177.0 180.9,171.5 189.3,166.0 197.7,160.5 206.0,155.0 214.2,149.5 221.9,144.0 229.2,138.5 235.8,133.0 241.8,127.5 247.1,122.0 251.7,116.5 255.6,111.0 258.8,105.5 261.5,100.0 263.6,94.5 265.3,89.0 266.6,83.5 267.6,78.0 268.3,72.5 268.8,67.0 269.2,61.5 269.5,56.0 270.5,56.0 270.8,61.5 271.2,67.0 271.7,72.5 272.4,78.0 273.4,83.5 274.7,89.0 276.4,94.5 278.5,100.0 281.2,105.5 284.4,111.0 288.3,116.5 292.9,122.0 298.2,127.5 304.2,133.0 310.8,138.5 318.1,144.0 325.8,149.5 334.0,155.0 342.3,160.5 350.7,166.0 359.1,171.5 367.2,177.0 374.9,182.5 382.2,188.0 389.0,193.5 395.2,199.0 400.9,204.5 406.0,210.0 410.7,215.5 415.0,221.0 418.8,226.5 422.2,232.0 425.1,237.5 427.5,243.0 429.1,248.5 430.0,254.0 429.9,259.5 428.7,265.0 426.3,270.5 422.7,276.0 417.8,281.5 411.7,287.0 404.6,292.5 396.6,298.0 387.9,303.5 378.8,309.0 369.5,314.5 360.4,320.0 351.5,325.5 343.1,331.0 335.3,336.5 328.2,342.0 321.9,347.5 316.2,353.0 311.3,358.5 307.1,364.0 303.5,369.5 300.5,375.0 298.0,380.5 296.0,386.0 294.3,391.5 293.1,397.0 292.1,402.5 291.4,408.0 290.9,413.5 290.6,419.0 290.3,424.5 290.0,430.0 289.7,435.5 289.2,441.0 288.6,446.5 287.9,452.0 287.0,457.5 285.9,463.0 284.6,468.5 283.3,474.0 281.9,479.5 280.4,485.0 279.0,490.5 277.6,496.0" fill="#2563eb" opacity="0.18" stroke="#2563eb" stroke-width="1.2"/>
-<line x1="256.0" y1="284.6" x2="284.0" y2="284.6" stroke="#2563eb" stroke-width="1"/>
-<line x1="256.0" y1="204.9" x2="284.0" y2="204.9" stroke="#2563eb" stroke-width="1"/>
-<line x1="270.0" y1="284.6" x2="270.0" y2="204.9" stroke="#2563eb" stroke-width="1"/>
-<line x1="250.0" y1="270.6" x2="290.0" y2="270.6" stroke="#111" stroke-width="2"/>
-<line x1="250.0" y1="261.6" x2="290.0" y2="261.6" stroke="#111" stroke-width="2" stroke-dasharray="5 3"/>
-<circle cx="225.2" cy="445.2" r="3.4" fill="#2563eb" stroke="#fff" stroke-width="0.6"/>
-<circle cx="247.6" cy="362.9" r="3.4" fill="#2563eb" stroke="#fff" stroke-width="0.6"/>
-<circle cx="270.0" cy="313.1" r="3.4" fill="#2563eb" stroke="#fff" stroke-width="0.6"/>
-<circle cx="292.4" cy="289.8" r="3.4" fill="#2563eb" stroke="#fff" stroke-width="0.6"/>
-<circle cx="314.8" cy="279.5" r="3.4" fill="#2563eb" stroke="#fff" stroke-width="0.6"/>
-<circle cx="225.2" cy="274.3" r="3.4" fill="#2563eb" stroke="#fff" stroke-width="0.6"/>
-<circle cx="247.6" cy="274.2" r="3.4" fill="#2563eb" stroke="#fff" stroke-width="0.6"/>
-<circle cx="270.0" cy="274.0" r="3.4" fill="#2563eb" stroke="#fff" stroke-width="0.6"/>
-<circle cx="292.4" cy="270.6" r="3.4" fill="#2563eb" stroke="#fff" stroke-width="0.6"/>
-<circle cx="314.8" cy="249.5" r="3.4" fill="#2563eb" stroke="#fff" stroke-width="0.6"/>
-<circle cx="225.2" cy="244.0" r="3.4" fill="#2563eb" stroke="#fff" stroke-width="0.6"/>
-<circle cx="247.6" cy="213.9" r="3.4" fill="#2563eb" stroke="#fff" stroke-width="0.6"/>
-<circle cx="270.0" cy="208.5" r="3.4" fill="#2563eb" stroke="#fff" stroke-width="0.6"/>
-<circle cx="292.4" cy="201.3" r="3.4" fill="#2563eb" stroke="#fff" stroke-width="0.6"/>
-<circle cx="314.8" cy="198.0" r="3.4" fill="#2563eb" stroke="#fff" stroke-width="0.6"/>
-<circle cx="225.2" cy="175.0" r="3.4" fill="#2563eb" stroke="#fff" stroke-width="0.6"/>
-<circle cx="247.6" cy="173.9" r="3.4" fill="#2563eb" stroke="#fff" stroke-width="0.6"/>
-<text x="270.0" y="516.0" text-anchor="middle" font-size="13" fill="#222">ID.3  (n=17, Median 17.2)</text>
-<text x="270.0" y="532.0" text-anchor="middle" font-size="11" fill="#777">η 94 %</text>
-<polygon points="670.0,496.0 670.0,490.5 670.0,485.0 669.9,479.5 669.9,474.0 669.8,468.5 669.7,463.0 669.6,457.5 669.3,452.0 669.0,446.5 668.4,441.0 667.6,435.5 666.5,430.0 664.9,424.5 662.7,419.0 659.9,413.5 656.2,408.0 651.5,402.5 645.6,397.0 638.6,391.5 630.3,386.0 620.8,380.5 610.0,375.0 598.3,369.5 585.8,364.0 573.0,358.5 560.1,353.0 547.8,347.5 536.6,342.0 526.8,336.5 519.0,331.0 513.4,325.5 510.4,320.0 510.0,314.5 512.2,309.0 516.8,303.5 523.6,298.0 532.0,292.5 541.7,287.0 552.2,281.5 562.9,276.0 573.5,270.5 583.6,265.0 592.8,259.5 601.1,254.0 608.3,248.5 614.6,243.0 619.8,237.5 624.3,232.0 628.2,226.5 631.6,221.0 634.6,215.5 637.5,210.0 640.3,204.5 643.0,199.0 645.7,193.5 648.2,188.0 650.6,182.5 652.7,177.0 654.5,171.5 655.9,166.0 657.0,160.5 657.6,155.0 657.9,149.5 657.9,144.0 657.6,138.5 657.2,133.0 656.7,127.5 656.2,122.0 655.9,116.5 655.7,111.0 655.8,105.5 656.1,100.0 656.7,94.5 657.6,89.0 658.6,83.5 659.8,78.0 661.0,72.5 662.3,67.0 663.5,61.5 664.7,56.0 675.3,56.0 676.5,61.5 677.7,67.0 679.0,72.5 680.2,78.0 681.4,83.5 682.4,89.0 683.3,94.5 683.9,100.0 684.2,105.5 684.3,111.0 684.1,116.5 683.8,122.0 683.3,127.5 682.8,133.0 682.4,138.5 682.1,144.0 682.1,149.5 682.4,155.0 683.0,160.5 684.1,166.0 685.5,171.5 687.3,177.0 689.4,182.5 691.8,188.0 694.3,193.5 697.0,199.0 699.7,204.5 702.5,210.0 705.4,215.5 708.4,221.0 711.8,226.5 715.7,232.0 720.2,237.5 725.4,243.0 731.7,248.5 738.9,254.0 747.2,259.5 756.4,265.0 766.5,270.5 777.1,276.0 787.8,281.5 798.3,287.0 808.0,292.5 816.4,298.0 823.2,303.5 827.8,309.0 830.0,314.5 829.6,320.0 826.6,325.5 821.0,331.0 813.2,336.5 803.4,342.0 792.2,347.5 779.9,353.0 767.0,358.5 754.2,364.0 741.7,369.5 730.0,375.0 719.2,380.5 709.7,386.0 701.4,391.5 694.4,397.0 688.5,402.5 683.8,408.0 680.1,413.5 677.3,419.0 675.1,424.5 673.5,430.0 672.4,435.5 671.6,441.0 671.0,446.5 670.7,452.0 670.4,457.5 670.3,463.0 670.2,468.5 670.1,474.0 670.1,479.5 670.0,485.0 670.0,490.5 670.0,496.0" fill="#ea580c" opacity="0.18" stroke="#ea580c" stroke-width="1.2"/>
-<line x1="656.0" y1="328.9" x2="684.0" y2="328.9" stroke="#ea580c" stroke-width="1"/>
-<line x1="656.0" y1="283.8" x2="684.0" y2="283.8" stroke="#ea580c" stroke-width="1"/>
-<line x1="670.0" y1="328.9" x2="670.0" y2="283.8" stroke="#ea580c" stroke-width="1"/>
-<line x1="650.0" y1="314.2" x2="690.0" y2="314.2" stroke="#111" stroke-width="2"/>
-<line x1="650.0" y1="291.3" x2="690.0" y2="291.3" stroke="#111" stroke-width="2" stroke-dasharray="5 3"/>
-<circle cx="625.2" cy="347.1" r="3.4" fill="#ea580c" stroke="#fff" stroke-width="0.6"/>
-<circle cx="647.6" cy="346.4" r="3.4" fill="#ea580c" stroke="#fff" stroke-width="0.6"/>
-<circle cx="670.0" cy="329.2" r="3.4" fill="#ea580c" stroke="#fff" stroke-width="0.6"/>
-<circle cx="692.4" cy="329.2" r="3.4" fill="#ea580c" stroke="#fff" stroke-width="0.6"/>
-<circle cx="714.8" cy="327.8" r="3.4" fill="#ea580c" stroke="#fff" stroke-width="0.6"/>
-<circle cx="625.2" cy="319.8" r="3.4" fill="#ea580c" stroke="#fff" stroke-width="0.6"/>
-<circle cx="647.6" cy="316.5" r="3.4" fill="#ea580c" stroke="#fff" stroke-width="0.6"/>
-<circle cx="670.0" cy="315.3" r="3.4" fill="#ea580c" stroke="#fff" stroke-width="0.6"/>
-<circle cx="692.4" cy="313.1" r="3.4" fill="#ea580c" stroke="#fff" stroke-width="0.6"/>
-<circle cx="714.8" cy="305.7" r="3.4" fill="#ea580c" stroke="#fff" stroke-width="0.6"/>
-<circle cx="625.2" cy="297.6" r="3.4" fill="#ea580c" stroke="#fff" stroke-width="0.6"/>
-<circle cx="647.6" cy="285.2" r="3.4" fill="#ea580c" stroke="#fff" stroke-width="0.6"/>
-<circle cx="670.0" cy="283.3" r="3.4" fill="#ea580c" stroke="#fff" stroke-width="0.6"/>
-<circle cx="692.4" cy="227.8" r="3.4" fill="#ea580c" stroke="#fff" stroke-width="0.6"/>
-<circle cx="714.8" cy="210.0" r="3.4" fill="#ea580c" stroke="#fff" stroke-width="0.6"/>
-<circle cx="625.2" cy="106.8" r="3.4" fill="#ea580c" stroke="#fff" stroke-width="0.6"/>
-<text x="670.0" y="516.0" text-anchor="middle" font-size="13" fill="#222">e-up!  (n=16, Median 14.9)</text>
-<text x="670.0" y="532.0" text-anchor="middle" font-size="11" fill="#777">η 95 %</text>
-</svg>
-<figcaption>Verteilung des Verbrauchs je Fahrt (ab Steckdose), je Auto. Punkte = echte Fahrten, durchgezogene Linie = Median, gestrichelt = Mittelwert, dünne Markierungen = Quartile. Der Abstand Median↔Mittelwert zeigt die Schiefe. Bei noch kleiner Fahrtenzahl ist die Violinenform nur grob – mit mehr Fahrten wird sie aussagekräftiger.</figcaption>
-</figure>
 
-<h2>Laden: kWh pro %SoC</h2>
+<h2>Laden</h2>
 <figure><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 560" font-family="system-ui,sans-serif">
 <rect width="900" height="560" fill="#ffffff"/>
 <text x="450" y="28" text-anchor="middle" font-size="18" font-weight="600" fill="#111">kWh pro %SoC: Messungen + gefittete Ableitung dE/dSoC</text>
@@ -435,7 +426,7 @@
 <line x1="650" y1="92" x2="672" y2="92" stroke="#ea580c" stroke-width="3"/>
 <text x="680" y="96" font-size="12" fill="#222">e-up!: Grad 3, R²=1.00 (n=18)</text>
 </svg>
-<figcaption>Gefittete Kurve kWh/%(SoC) (Ableitung der kumulativen Energie-Kurve) über den Messungen. kWh/% steigt mit dem SoC.</figcaption>
+<figcaption>kWh pro %SoC (ab Steckdose), gefittete Kurve über den Messungen. Steigt mit dem SoC.</figcaption>
 </figure>
 <figure><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 560" font-family="system-ui,sans-serif">
 <rect x="0" y="0" width="900" height="560" fill="#ffffff"/>
@@ -552,7 +543,7 @@
 <circle cx="731" cy="92" r="3.2" fill="#ea580c"/>
 <text x="750" y="96" font-size="13" fill="#222">e-up! (n=18)</text>
 </svg>
-<figcaption>Rohmessungen: jede Ladung als Segment von Start- bis End-SoC auf Höhe Geladen/ΔSoC (ab Steckdose).</figcaption>
+<figcaption>Rohmessungen: jede Ladung als Segment von Start- bis End-SoC.</figcaption>
 </figure>
 <figure><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 560" font-family="system-ui,sans-serif">
 <rect width="900" height="560" fill="#ffffff"/>
@@ -612,7 +603,32 @@
 <figcaption>Ladebedarf E(SoC): kWh ab Steckdose, um von 0 % auf einen SoC zu laden. Gestrichelt = extrapoliert.</figcaption>
 </figure>
 
-<h2>Validierung</h2>
+<h2>Details &amp; Methodik</h2>
+<p class="muted">Für Interessierte: wie die Zahlen oben zustande kommen.</p>
+
+<h3>Gemessen (ohne Annahmen)</h3>
+<p class="muted">Nur aus Wallbox-Energie und Tacho – ohne jede Annahme über Akku-Kapazität oder Wirkungsgrad.</p>
+<table>
+<thead><tr><th>Fahrzeug</th><th>gefahren</th><th>geladen<br>(Wallbox)</th><th>ab Steckdose roh<br>ΣkWh / Σkm</th><th>Akku am Ende<br>(SoC-Saldo)</th></tr></thead>
+<tbody>
+<tr><th>ID.3</th><td>1817 km</td><td>289 kWh</td><td>15.9</td><td>-69 %</td></tr>
+<tr><th>e-up!</th><td>1351 km</td><td>208 kWh</td><td>15.4</td><td>-25 %</td></tr>
+</tbody>
+</table>
+<p class="muted">Der rohe Wert gilt nur bei gleichem Start-/End-SoC. Aktuell sind die Akkus am Ende leerer (letzte Spalte): die auf dieser Rest-Entladung gefahrenen km sind noch nicht nachgeladen, deshalb ist „ab Steckdose roh“ <strong>zu niedrig</strong>. Der korrigierte Wert steht unten.</p>
+
+<h3>Verbrauch: ab Steckdose − Ladeverluste = ab Akku</h3>
+<p class="muted">Primär ist die (fast) gemessene Größe <strong>ab Steckdose</strong> – Energie aus der Wand je 100 km, um die Netto-SoC-Verschiebung korrigiert. Davon sind die <strong>Ladeverluste</strong> ein Prozent-Anteil (Wirkungsgrad aus den Ladedaten gemessen). Rest = ab Akku.</p>
+<table>
+<thead><tr><th>Fahrzeug</th><th>ab Steckdose<br>(gemessen)</th><th>− Ladeverluste</th><th>= ab Akku<br>(abgeleitet)</th><th>Gegencheck ab Akku<br>(ΔSoC × Kapazität)</th></tr></thead>
+<tbody>
+<tr><th>ID.3</th><td>18.1</td><td>−6 % (≈1.1)</td><td><strong>17.0</strong></td><td>16.9</td></tr>
+<tr><th>e-up!</th><td>16.0</td><td>−5 % (≈0.8)</td><td><strong>15.2</strong></td><td>15.1</td></tr>
+</tbody>
+</table>
+<p class="muted">Alle Werte in kWh/100 km. Der <strong>Gegencheck</strong> rechnet „ab Akku“ unabhängig über SoC-Hub × VW-Kapazität (ID.3 53,7 / e-up! 32,3 kWh) – er bestätigt die abgeleitete Zahl auf ~1 %. Gemessener Ladewirkungsgrad: ID.3 94 %, e-up! 95 %. Nutzbare Kapazität aus dem Lade-Fit: ID.3 58.5 kWh, e-up! 31.2 kWh.</p>
+
+<h3>Validierung</h3>
 <figure><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 560" font-family="system-ui,sans-serif">
 <rect width="900" height="560" fill="#ffffff"/>
 <text x="450" y="28" text-anchor="middle" font-size="18" font-weight="600" fill="#111">① Verbrauch (ab Akku): berechnet vs. Bordcomputer</text>
